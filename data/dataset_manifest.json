@@ -1,0 +1,30 @@
+{
+  "pyrit_eval": {
+    "sources": [
+      {
+        "dataset": "JailbreakBench/JBB-Behaviors",
+        "split": "harmful",
+        "contributed": 100
+      },
+      {
+        "dataset": "neuralchemy/Prompt-injection-dataset",
+        "split": "test",
+        "contributed": 536
+      },
+      {
+        "dataset": "neuralchemy/Prompt-injection-dataset",
+        "split": "validation",
+        "contributed": 364
+      }
+    ],
+    "samples": 1000,
+    "file": "D:\\HUST\\project 2\\data\\pyrit_test_prompts.jsonl"
+  },
+  "prompt_guard_train": {
+    "dataset": "neuralchemy/Prompt-injection-dataset/full",
+    "split": "train",
+    "samples": 13965,
+    "file": "D:\\HUST\\project 2\\data\\prompt_guard_train.jsonl",
+    "overlap_removed_against": "D:\\HUST\\project 2\\data\\pyrit_test_prompts.jsonl"
+  }
+}

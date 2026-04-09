@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+ollama
+git+https://github.com/Azure/PyRIT.git
+transformers
+datasets
+torch
+accelerate
+sentencepiece

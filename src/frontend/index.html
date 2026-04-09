@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Injection Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <main class="app-shell">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">University Thesis Demo</p>
+                <h1>Prompt Injection vs Guardrail</h1>
+            </div>
+            <span id="modeBadge" class="mode-badge">Vulnerable Mode</span>
+        </header>
+
+        <section id="chatWindow" class="chat-window" aria-live="polite">
+            <article class="message assistant">
+                <p class="meta">assistant</p>
+                <p>Welcome. Try normal prompts, then injection prompts to see model behavior.</p>
+            </article>
+        </section>
+
+        <form id="chatForm" class="chat-form">
+            <label for="messageInput" class="sr-only">Enter your message</label>
+            <textarea
+                id="messageInput"
+                name="message"
+                rows="2"
+                placeholder="Type your message..."
+                required
+            ></textarea>
+            <button id="sendBtn" type="submit">Send</button>
+        </form>
+    </main>
+
+    <script src="/script.js"></script>
+</body>
+</html>

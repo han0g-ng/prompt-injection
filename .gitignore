@@ -1,0 +1,5 @@
+instruction*.md
+.env
+.vscode/
+
+hf_cache/Jailbreak*/
