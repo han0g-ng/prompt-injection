@@ -3,3 +3,5 @@ instruction*.md
 .vscode/
 
 hf_cache/Jailbreak*/
+
+flip_word.py

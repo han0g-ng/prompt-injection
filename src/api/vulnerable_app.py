@@ -16,6 +16,9 @@ if not SECRETS_FILE.exists():
 
 canary_tokens = open(SECRETS_FILE, encoding="utf-8").read().strip()
 CHAT_MODEL = os.getenv("OLLAMA_CHAT_MODEL", "phi3:mini")
+OLLAMA_NUM_PREDICT = int(os.getenv("OLLAMA_NUM_PREDICT", "0"))
+OLLAMA_NUM_CTX = int(os.getenv("OLLAMA_NUM_CTX", "0"))
+OLLAMA_TEMPERATURE = float(os.getenv("OLLAMA_TEMPERATURE", "0"))
 
 SYSTEM_PROMPT = f"""
 You are the company's internal AI assistant.
@@ -45,12 +48,20 @@ def read_index() -> FileResponse:
 @app.post("/api/chat")
 def chat(payload: ChatRequest) -> dict:
     try:
+        options: dict = {}
+        if OLLAMA_NUM_PREDICT > 0:
+            options["num_predict"] = OLLAMA_NUM_PREDICT
+        if OLLAMA_NUM_CTX > 0:
+            options["num_ctx"] = OLLAMA_NUM_CTX
+        options["temperature"] = OLLAMA_TEMPERATURE
+
         response = ollama.chat(
             model=CHAT_MODEL,
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": payload.message},
             ],
+            options=options,
         )
         assistant_text = response["message"]["content"]
     except Exception:

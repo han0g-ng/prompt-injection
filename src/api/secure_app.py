@@ -40,6 +40,9 @@ FRONTEND_DIR = ROOT / "src" / "frontend"
 DEFAULT_GUARD_MODEL = "meta-llama/Llama-Prompt-Guard-2-86M"
 GUARD_MODEL = os.getenv("PROMPT_GUARD_MODEL", DEFAULT_GUARD_MODEL)
 CHAT_MODEL = os.getenv("OLLAMA_CHAT_MODEL", "phi3:mini")
+OLLAMA_NUM_PREDICT = int(os.getenv("OLLAMA_NUM_PREDICT", "0"))
+OLLAMA_NUM_CTX = int(os.getenv("OLLAMA_NUM_CTX", "0"))
+OLLAMA_TEMPERATURE = float(os.getenv("OLLAMA_TEMPERATURE", "0"))
 MAX_GUARD_TOKENS = 512
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 LOCAL_GUARD_DIR = ROOT / "models" / "finetuned-prompt-guard"
@@ -146,12 +149,20 @@ def read_index() -> FileResponse:
 @app.post("/api/chat")
 def chat(payload: ChatRequest) -> dict:
     try:
+        options: dict = {}
+        if OLLAMA_NUM_PREDICT > 0:
+            options["num_predict"] = OLLAMA_NUM_PREDICT
+        if OLLAMA_NUM_CTX > 0:
+            options["num_ctx"] = OLLAMA_NUM_CTX
+        options["temperature"] = OLLAMA_TEMPERATURE
+
         response = ollama.chat(
             model=CHAT_MODEL,
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": payload.message},
             ],
+            options=options,
         )
         assistant_text = response["message"]["content"]
     except Exception:
