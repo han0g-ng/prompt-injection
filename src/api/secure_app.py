@@ -2,6 +2,7 @@ import json
 import os
 from pathlib import Path
 from typing import Callable
+from typing import Optional
 
 import ollama
 import torch
@@ -39,7 +40,13 @@ ROOT = Path(__file__).resolve().parents[2]
 FRONTEND_DIR = ROOT / "src" / "frontend"
 DEFAULT_GUARD_MODEL = "meta-llama/Llama-Prompt-Guard-2-86M"
 GUARD_MODEL = os.getenv("PROMPT_GUARD_MODEL", DEFAULT_GUARD_MODEL)
-CHAT_MODEL = os.getenv("OLLAMA_CHAT_MODEL", "phi3:mini")
+DEFAULT_CHAT_MODEL = os.getenv("OLLAMA_CHAT_MODEL", "phi3:mini")
+DEFAULT_ALLOWED_MODELS = "phi3:mini,qwen2.5-coder:1.5b,deepseek-coder:1.3b,gemma2:2b,tinyllama:1.1b,dolphin-phi:2.7b"
+ALLOWED_MODELS = [
+    m.strip()
+    for m in os.getenv("OLLAMA_ALLOWED_MODELS", DEFAULT_ALLOWED_MODELS).split(",")
+    if m.strip()
+]
 OLLAMA_NUM_PREDICT = int(os.getenv("OLLAMA_NUM_PREDICT", "0"))
 OLLAMA_NUM_CTX = int(os.getenv("OLLAMA_NUM_CTX", "0"))
 OLLAMA_TEMPERATURE = float(os.getenv("OLLAMA_TEMPERATURE", "0"))
@@ -72,6 +79,17 @@ GUARD_ENABLED = guard_tokenizer is not None and guard_model is not None
 
 class ChatRequest(BaseModel):
     message: str
+    model: Optional[str] = None
+
+
+def _resolve_chat_model(requested_model: Optional[str]) -> str:
+    selected = (requested_model or DEFAULT_CHAT_MODEL).strip()
+    if selected not in ALLOWED_MODELS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Model '{selected}' is not in OLLAMA_ALLOWED_MODELS.",
+        )
+    return selected
 
 
 def _set_request_body(request: Request, body: bytes) -> None:
@@ -146,9 +164,15 @@ def read_index() -> FileResponse:
     return FileResponse(FRONTEND_DIR / "index.html")
 
 
+@app.get("/api/models")
+def get_models() -> dict:
+    return {"default_model": DEFAULT_CHAT_MODEL, "allowed_models": ALLOWED_MODELS}
+
+
 @app.post("/api/chat")
 def chat(payload: ChatRequest) -> dict:
     try:
+        model_name = _resolve_chat_model(payload.model)
         options: dict = {}
         if OLLAMA_NUM_PREDICT > 0:
             options["num_predict"] = OLLAMA_NUM_PREDICT
@@ -157,7 +181,7 @@ def chat(payload: ChatRequest) -> dict:
         options["temperature"] = OLLAMA_TEMPERATURE
 
         response = ollama.chat(
-            model=CHAT_MODEL,
+            model=model_name,
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": payload.message},
@@ -168,7 +192,7 @@ def chat(payload: ChatRequest) -> dict:
     except Exception:
         assistant_text = (
             "Local chat model is not reachable right now. "
-            "Please ensure Ollama is running and phi3:mini is available."
+            "Please ensure Ollama is running and the selected model is available."
         )
     return {"response": assistant_text}
 

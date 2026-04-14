@@ -1,17 +1,20 @@
-Cach chay Label 0 - tung luot 1 lan goi API:
-python gendata/generate_gemini_dataset.py --api-key "AIzaSyDeFZ-cJJEogblQGnGMeV7VRn4EfTlxxDM" --meta-prompt-file gendata/label0metaprompt.md --force-label 0 --manual-one-call --confirm-before-call --model gemini-2.5-flash --target-size 2000 --rpm 8 --examples-per-call 20 --output-file gendata/generated_label0_2000.jsonl
+Dat API key (PowerShell):
 
-Cach chay Label 0 - chay 1 lan den 2000 data:
-python gendata/generate_gemini_dataset.py --api-key "AIzaSyDeFZ-cJJEogblQGnGMeV7VRn4EfTlxxDM" --meta-prompt-file gendata/label0metaprompt.md --force-label 0 --model gemini-2.5-flash --target-size 2000 --rpm 8 --examples-per-call 20 --output-file gendata/generated_label0_2000.jsonl
 
-Cach chay Label 1 - tung luot 1 lan goi API:
-python gendata/generate_gemini_dataset.py --api-key "AIzaSyDeFZ-cJJEogblQGnGMeV7VRn4EfTlxxDM" --meta-prompt-file gendata/label1metaprompt.md --force-label 1 --manual-one-call --confirm-before-call --model gemini-2.5-flash --target-size 2000 --rpm 8 --examples-per-call 20 --output-file gendata/generated_label1_2000.jsonl
+Muc tieu: moi lenh ben duoi se chay full de tao file 2000 prompts.
 
-Cach chay Label 1 - chay 1 lan den 2000 data:
-python gendata/generate_gemini_dataset.py --api-key "AIzaSyDeFZ-cJJEogblQGnGMeV7VRn4EfTlxxDM" --meta-prompt-file gendata/label1metaprompt.md --force-label 1 --model gemini-2.5-flash --target-size 2000 --rpm 8 --examples-per-call 20 --output-file gendata/generated_label1_2000.jsonl
+1) Gemini 2.5 Flash - Label 1:
+python gendata/generate_gemini_dataset.py --meta-prompt-file gendata/label1metaprompt.md --force-label 1 --model gemini-2.5-flash --target-size 2000 --rpm 3 --examples-per-call 25 --output-file gendata/generated_label1_2000.jsonl
 
-Cach chay Label 2 - tung luot 1 lan goi API:
-python gendata/generate_gemini_dataset.py --api-key "AIzaSyDeFZ-cJJEogblQGnGMeV7VRn4EfTlxxDM" --meta-prompt-file gendata/label2metaprompt.md --force-label 2 --manual-one-call --confirm-before-call --model gemini-2.5-flash --target-size 2000 --rpm 8 --examples-per-call 20 --output-file gendata/generated_label2_2000.jsonl
+2) Gemini 2.5 Flash - Label 2:
+python gendata/generate_gemini_dataset.py --meta-prompt-file gendata/label2metaprompt.md --force-label 2 --model gemini-2.5-flash --target-size 2000 --rpm 3 --examples-per-call 25 --output-file gendata/generated_label2_2000.jsonl
 
-Cach chay Label 2 - chay 1 lan den 2000 data:
-python gendata/generate_gemini_dataset.py --api-key "AIzaSyDeFZ-cJJEogblQGnGMeV7VRn4EfTlxxDM" --meta-prompt-file gendata/label2metaprompt.md --force-label 2 --model gemini-2.5-flash --target-size 2000 --rpm 8 --examples-per-call 20 --output-file gendata/generated_label2_2000.jsonl
+3) Gemini 3 Flash - Label 1:
+python gendata/generate_gemini_dataset.py --meta-prompt-file gendata/label1metaprompt.md --force-label 1 --model gemini-3-flash-preview --target-size 2000 --rpm 3 --examples-per-call 25 --output-file gendata/generated_label1_2000.jsonl
+
+4) Gemini 3 Flash - Label 2:
+python gendata/generate_gemini_dataset.py --meta-prompt-file gendata/label2metaprompt.md --force-label 2 --model gemini-3-flash-preview --target-size 2000 --rpm 3 --examples-per-call 25 --output-file gendata/generated_label2_2000.jsonl
+
+Luu y:
+- Voi --examples-per-call 25, ly thuyet can ~80 requests de dat 2000 prompts.
+- Thuc te co the can them requests neu bi duplicate/invalid hoac model tra ve thieu so luong.

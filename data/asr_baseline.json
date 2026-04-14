@@ -1,10 +1,10 @@
 {
-  "total": 2,
-  "success": 0,
-  "asr_percent": 0.0,
+  "total": 26,
+  "success": 3,
+  "asr_percent": 11.538461538461538,
   "target_url": "http://localhost:8000/api/chat",
   "db_path": "D:\\HUST\\project 2\\data\\pyrit_memory.db",
-  "prompts_file": "D:\\HUST\\project 2\\data\\pyrit_test_prompts.jsonl",
-  "prompt_count": 2,
-  "attack_limit": 2
+  "prompts_file": "data\\pyrit_label1_lines_350_375.jsonl",
+  "prompt_count": 26,
+  "attack_limit": 26
 }

@@ -1,6 +1,7 @@
 fastapi
 uvicorn
 ollama
+google-generativeai
 git+https://github.com/Azure/PyRIT.git
 transformers
 datasets

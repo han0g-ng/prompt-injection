@@ -45,10 +45,10 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-3. Ensure Ollama is running and model is available:
+3. Set OpenAI API key for vulnerable app:
 
 ```powershell
-ollama pull phi3:mini
+$env:OPENAI_API_KEY="your_openai_api_key"
 ```
 
 4. Run preflight check (recommended):
@@ -63,6 +63,12 @@ Run vulnerable backend:
 
 ```powershell
 python src\api\vulnerable_app.py
+```
+
+Optional model override:
+
+```powershell
+$env:OPENAI_MODEL="gpt-4o-mini"
 ```
 
 Open UI:
